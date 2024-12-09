@@ -1,102 +1,112 @@
-"use client";
-
+"use client"
 
 import { useState } from "react"
-import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+import { HelpCircle, Search, ChefHat, Utensils } from 'lucide-react'
+import { FeaturedRecipes } from "@/components/featured-recipes"
+import { Card, CardContent } from "@/components/ui/card"
+import { useRouter } from 'next/navigation'
+
+const popularCategories = [
+  { name: 'Śniadania', icon: '🍳', filter: { type: 'śniadania' } },
+  { name: 'Obiady', icon: '🍝', filter: { type: 'danie główne' } },
+  { name: 'Desery', icon: '🍰', filter: { type: 'deser' } },
+  { name: 'Wegetariańskie', icon: '🥗', filter: { diet: 'wegetarianskie' } },
+  { name: 'Szybkie dania', icon: '⏱️', filter: { time: '30' } },
+]
+
+const cookingTips = [
+  "Zawsze czytaj cały przepis przed rozpoczęciem gotowania.",
+  "Ostrz noże regularnie dla bezpieczeństwa i efektywności.",
+  "Używaj termometru do mięsa, aby uzyskać idealne wyniki.",
+  "Nie bój się eksperymentować z przyprawami i ziołami.",
+]
 
 export default function HomePage() {
-  const [meatFilter, setMeatFilter] = useState<string>('all')
-  const [dietFilter, setDietFilter] = useState<string>('all')
-  const [typeFilter, setTypeFilter] = useState<string>('all')
-  const [timeFilter, setTimeFilter] = useState<string>('all')
+  const [searchTerm, setSearchTerm] = useState<string>('')
+  //const [selectedCategory, setSelectedCategory] = useState<string>('Wszystkie')
+  const router = useRouter()
+
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    router.push(`/results?search=${encodeURIComponent(searchTerm)}`)
+  }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[url('/placeholder.svg?height=1080&width=1920')] bg-cover bg-center bg-blend-overlay bg-green-100/80 dark:bg-green-900/80">
-      <div className="bg-white/90 dark:bg-green-950/90 p-8 rounded-lg backdrop-blur-sm w-full max-w-3xl shadow-lg">
-        <h1 className="text-4xl font-bold text-green-700 dark:text-green-300 mb-8 text-center">Znajdź swój idealny przepis</h1>
-        
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-6">
-          <div>
-            <Label htmlFor="meat" className="text-green-700 dark:text-green-300">Mięso</Label>
-            <Select value={meatFilter} onValueChange={setMeatFilter}>
-              <SelectTrigger id="meat" className="bg-green-50 dark:bg-green-800">
-                <SelectValue placeholder="Wybierz opcję" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Wszystkie</SelectItem>
-                <SelectItem value="drob">Drób</SelectItem>
-                <SelectItem value="wolowina">Wołowina</SelectItem>
-                <SelectItem value="wieprzowina">Wieprzowina</SelectItem>
-                <SelectItem value="owoce-morza">Owoce morza</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          
-          <div>
-            <Label htmlFor="diet" className="text-green-700 dark:text-green-300">Dieta</Label>
-            <Select value={dietFilter} onValueChange={setDietFilter}>
-              <SelectTrigger id="diet" className="bg-green-50 dark:bg-green-800">
-                <SelectValue placeholder="Wybierz opcję" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Wszystkie</SelectItem>
-                <SelectItem value="wege">Wege</SelectItem>
-                <SelectItem value="wegetarianskie">Wegetariańskie</SelectItem>
-                <SelectItem value="keto">Keto</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          
-          <div>
-            <Label htmlFor="type" className="text-green-700 dark:text-green-300">Typ dania</Label>
-            <Select value={typeFilter} onValueChange={setTypeFilter}>
-              <SelectTrigger id="type" className="bg-green-50 dark:bg-green-800">
-                <SelectValue placeholder="Wybierz opcję" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Wszystkie</SelectItem>
-                <SelectItem value="zupa">Zupa</SelectItem>
-                <SelectItem value="danie-glowne">Danie główne</SelectItem>
-                <SelectItem value="deser">Deser</SelectItem>
-                <SelectItem value="napoj">Napój</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          
-          <div>
-            <Label htmlFor="time" className="text-green-700 dark:text-green-300">Czas</Label>
-            <Select value={timeFilter} onValueChange={setTimeFilter}>
-              <SelectTrigger id="time" className="bg-green-50 dark:bg-green-800">
-                <SelectValue placeholder="Wybierz opcję" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Wszystkie</SelectItem>
-                <SelectItem value="15">Do 15 min</SelectItem>
-                <SelectItem value="30">Do 30 min</SelectItem>
-                <SelectItem value="60">Do 1 godz</SelectItem>
-                <SelectItem value="more">Powyżej 1 godz</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          
-          <div className="col-span-2 md:col-span-3 lg:col-span-1">
-            <Label htmlFor="search" className="text-green-700 dark:text-green-300">Szukaj</Label>
-            <Input id="search" placeholder="Wpisz składnik lub nazwę przepisu..." className="w-full bg-green-50 dark:bg-green-800" />
-          </div>
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <div className="relative bg-[url('/placeholder.svg?height=400&width=1200')] bg-cover bg-center py-24">
+        <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+        <div className="relative container mx-auto text-center text-white animate-fade-in">
+          <h1 className="text-5xl font-bold mb-4">Odkryj kulinarne inspiracje</h1>
+          <p className="text-xl mb-8">Znajdź swój idealny przepis spośród tysięcy pysznych opcji</p>
+          <form onSubmit={handleSearch} className="max-w-2xl mx-auto flex gap-2">
+            <Input
+              type="search"
+              placeholder="Wpisz składnik lub nazwę przepisu..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="input-primary flex-grow text-gray-900 dark:text-white"
+            />
+            <Button type="submit" className="btn-primary">
+              <Search className="w-5 h-5 mr-2" />
+              Szukaj
+            </Button>
+          </form>
         </div>
-        
-        <div className="flex justify-center">
-          <Button type="submit" className="w-full md:w-auto bg-green-600 hover:bg-green-700 text-white">Szukaj</Button>
-        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="container mx-auto py-12 space-y-12">
+        {/* Popular Categories */}
+        <section className="animate-slide-up">
+          <h2 className="text-3xl font-bold mb-6 text-green-700 dark:text-green-300">Popularne kategorie</h2>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            {popularCategories.map((category, index) => (
+              <Button
+                key={index}
+                variant="outline"
+                className={`h-auto py-4 flex flex-col items-center justify-center text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-white hover:text-gray-700 dark:hover:bg-gray-800 dark:hover:text-gray-300 transition-shadow duration-300`}
+                onClick={() => {
+                  const searchParams = new URLSearchParams();
+                  Object.entries(category.filter).forEach(([key, value]) => {
+                    searchParams.set(key, value);
+                  });
+                  router.push(`/results?${searchParams.toString()}`);
+                }}
+              >
+                <span className="text-3xl mb-2">{category.icon}</span>
+                <span>{category.name}</span>
+              </Button>
+            ))}
+          </div>
+        </section>
+
+        {/* Featured Recipes */}
+        <section className="animate-slide-up">
+          <h2 className="text-3xl font-bold mb-6 text-green-700 dark:text-green-300">Polecane przepisy</h2>
+          <FeaturedRecipes />
+        </section>
+
+        {/* Cooking Tips */}
+        <section className="animate-slide-up">
+          <h2 className="text-3xl font-bold mb-6 text-green-700 dark:text-green-300">Porady kulinarne</h2>
+          <div className="grid gap-6 md:grid-cols-2">
+            {cookingTips.map((tip, index) => (
+              <Card key={index} className="bg-white dark:bg-gray-800 hover:shadow-lg transition-shadow duration-300">
+                <CardContent className="p-6 flex items-start space-x-4">
+                  {index % 2 === 0 ? (
+                    <ChefHat className="w-6 h-6 text-green-600 dark:text-green-400 flex-shrink-0" />
+                  ) : (
+                    <Utensils className="w-6 h-6 text-green-600 dark:text-green-400 flex-shrink-0" />
+                  )}
+                  <p className="text-gray-700 dark:text-gray-300">{tip}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
       </div>
     </div>
   )

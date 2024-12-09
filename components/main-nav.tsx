@@ -1,35 +1,41 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Settings, Shuffle } from 'lucide-react'
+import { Settings, HelpCircle } from 'lucide-react'
+import { ModeToggle } from "@/components/mode-toggle"
 
 export function MainNav() {
   return (
-    <nav className="border-b bg-green-50 dark:bg-green-900">
-      <div className="container mx-auto px-4 py-3">
+    <nav className="border-b bg-white dark:bg-gray-900 shadow-sm">
+      <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-6">
-            <Link href="/" className="text-xl font-bold text-green-700 dark:text-green-300">
-              Logo
+            <Link href="/" className="text-2xl font-bold text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 transition-colors duration-300">
+              CookBook
             </Link>
-            <Link href="/results" passHref>
-              <Button variant="ghost" className="text-sm font-medium text-green-700 hover:text-green-600 dark:text-green-300 dark:hover:text-green-400">Wszystkie przepisy</Button>
+            <Link href="/results">
+              <Button variant="ghost" className="nav-link">Wszystkie przepisy</Button>
             </Link>
-            <Link href="/favorites" passHref>
-              <Button variant="ghost" className="text-sm font-medium text-green-700 hover:text-green-600 dark:text-green-300 dark:hover:text-green-400">Ulubione</Button>
+            <Link href="/favorites">
+              <Button variant="ghost" className="nav-link">Ulubione</Button>
             </Link>
-            <Link href="/recipes/add" passHref>
-              <Button variant="ghost" className="text-sm font-medium text-green-700 hover:text-green-600 dark:text-green-300 dark:hover:text-green-400">Dodaj przepis</Button>
+            <Link href="/recipes/add">
+              <Button variant="ghost" className="nav-link">Dodaj przepis</Button>
             </Link>
-            <Link href="/random-recipe" passHref>
-              <Button variant="ghost" className="text-sm font-medium text-green-700 hover:text-green-600 dark:text-green-300 dark:hover:text-green-400">
-                <Shuffle className="mr-2 h-4 w-4" />
-                Losowy przepis
+            <Link href="/random-recipe">
+              <Button variant="ghost" className="nav-link">
+                Przepis dnia
               </Button>
             </Link>
           </div>
-          <Link href="/settings" className="text-sm font-medium">
-            <Settings className="h-5 w-5 text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300" />
-          </Link>
+          <div className="flex items-center space-x-4">
+            <Link href="/faq" className="nav-link">
+              <HelpCircle className="h-6 w-6" />
+            </Link>
+            <Link href="/settings" className="nav-link">
+              <Settings className="h-6 w-6" />
+            </Link>
+            <ModeToggle />
+          </div>
         </div>
       </div>
     </nav>

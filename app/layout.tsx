@@ -1,8 +1,8 @@
-import { Inter } from "next/font/google"
+import { Inter } from 'next/font/google'
 import "./globals.css"
 import { MainNav } from "@/components/main-nav"
 import { ThemeProvider } from "@/components/theme-provider"
-import { ModeToggle } from "@/components/mode-toggle"
+import { FavoritesProvider } from "@/contexts/FavoritesContext"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -15,20 +15,19 @@ export default function RootLayout({
     <html lang="pl">
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="min-h-screen flex flex-col">
-            <header>
-              <MainNav />
-              <div className="container mx-auto px-4 py-2 flex justify-end">
-                <ModeToggle />
-              </div>
-            </header>
-            <main className="flex-grow container mx-auto px-4 py-8">{children}</main>
-            <footer className="bg-secondary">
-              <div className="container mx-auto px-4 py-6 text-center text-sm text-muted-foreground">
-                © 2023 Recipe App. Wszystkie prawa zastrzeżone.
-              </div>
-            </footer>
-          </div>
+          <FavoritesProvider>
+            <div className="min-h-screen flex flex-col">
+              <header>
+                <MainNav />
+              </header>
+              <main className="flex-grow container mx-auto px-4 py-8">{children}</main>
+              <footer className="bg-secondary">
+                <div className="container mx-auto px-4 py-6 text-center text-sm text-muted-foreground">
+                  © 2024 CookBook. Wszystkie prawa zastrzeżone.
+                </div>
+              </footer>
+            </div>
+          </FavoritesProvider>
         </ThemeProvider>
       </body>
     </html>
